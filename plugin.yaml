@@ -8,7 +8,7 @@ description: >
   registration — all on v2 primitives. Domain: personal notes.
 author: Evolution Foundation <contato@evolutionfoundation.com.br>
 license: MIT
-homepage: https://evonexus.evolutionfoundation.com.br
+homepage: https://github.com/EvolutionAPI/evonexus-plugin-evo-essentials
 min_evonexus_version: 0.34.0
 tier: essential
 
