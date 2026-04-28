@@ -1,0 +1,26 @@
+{
+  "name": "@evoapi/evo-essentials",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EvoNexus v2 reference plugin — Notes CRUD, schema-driven forms, home widget",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build --config vite.config.ts && vite build --config vite.widget.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@evoapi/evonexus-ui": "^0.1.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "~5.9.0",
+    "vite": "^8.0.0"
+  }
+}

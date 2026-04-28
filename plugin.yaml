@@ -1,0 +1,100 @@
+schema_version: "2.0"
+id: evo-essentials
+name: Evo Essentials
+version: 1.0.0
+description: >
+  Reference plugin for EvoNexus v2 React contract. Demonstrates schema-driven
+  CRUD with SchemaForm/SchemaTable, a home widget, agents, skills, and rules
+  registration — all on v2 primitives. Domain: personal notes.
+author: Evolution Foundation <contato@evolutionfoundation.com.br>
+license: MIT
+homepage: https://evonexus.evolutionfoundation.com.br
+min_evonexus_version: 0.34.0
+tier: essential
+
+capabilities:
+  - agents
+  - skills
+  - rules
+  - sql_migrations
+  - ui_pages
+  - widgets
+  - readonly_data
+  - writable_data
+
+ui_entry_points:
+  pages:
+    - id: notes
+      label: Notes
+      path: notes
+      bundle: dist/pages/notes.js
+      icon: StickyNote
+      order: 1
+    - id: notes-list
+      label: Notes List
+      path: notes-list
+      bundle: dist/pages/notes-list.js
+      icon: List
+      order: 2
+  sidebar_groups:
+    - id: evo-essentials-group
+      label: Essentials
+      order: 10
+      collapsible: true
+  widgets:
+    - id: pinned-notes
+      label: Pinned Notes
+      filename: pinned-notes.js
+      custom_element_name: evo-essentials-pinned-notes
+      mount_point: overview
+
+writable_data:
+  - id: notes
+    description: Personal notes with title, body, priority, pinned flag and due date.
+    table: evo_essentials_notes
+    allowed_columns:
+      - title
+      - body
+      - priority
+      - pinned
+      - due_date
+    json_schema:
+      type: object
+      properties:
+        title:
+          type: string
+          title: Title
+          minLength: 1
+          maxLength: 200
+        body:
+          type: string
+          title: Body
+          description: Note content
+        priority:
+          type: string
+          title: Priority
+          enum:
+            - low
+            - medium
+            - high
+        pinned:
+          type: boolean
+          title: Pinned
+          description: Show this note on the home widget
+        due_date:
+          type: string
+          title: Due Date
+          format: date
+      required:
+        - title
+        - priority
+
+readonly_data:
+  - id: pinned_notes_count
+    description: Count of pinned notes for the home widget.
+    sql: >
+      SELECT COUNT(*) AS count FROM evo_essentials_notes WHERE pinned = 1
+
+agents:
+  - file: agents/notes-agent.md
+
