@@ -4,7 +4,7 @@ import type { SelectOption, BadgeVariant } from '@evoapi/evonexus-ui'
 import { NOTES_COLUMNS } from '../notes-schema'
 
 type Note = Record<string, unknown>
-const BASE = '/api/plugins/evo-essentials/data/notes'
+const READ = '/api/plugins/evo-essentials/readonly-data/notes_all'
 
 const PRIORITY_OPTIONS: SelectOption[] = [
   { value: '', label: 'All priorities' },
@@ -31,7 +31,7 @@ export default function NotesListPage({ slug }: { slug: string }) {
   const [pinnedOnly, setPinnedOnly] = useState(false)
 
   useEffect(() => {
-    fetch(BASE)
+    fetch(READ, { credentials: 'include' })
       .then(r => r.json())
       .then(d => setNotes(d.rows ?? []))
       .catch(() => setNotes([]))

@@ -1,7 +1,7 @@
 schema_version: "2.0"
 id: evo-essentials
 name: Evo Essentials
-version: 1.1.0
+version: 1.1.1
 description: >
   Reference plugin for EvoNexus v2. Demonstrates one of every capability —
   agents, skills, rules, UI pages, widgets, writable_data, readonly_data,
@@ -104,6 +104,14 @@ readonly_data:
       FROM evo_essentials_notes
       GROUP BY priority
       ORDER BY priority
+  - id: notes_all
+    description: All notes ordered by priority (high first) and recency.
+    sql: >
+      SELECT id, title, body, priority, pinned, due_date, created_at
+      FROM evo_essentials_notes
+      ORDER BY
+        CASE priority WHEN 'high' THEN 3 WHEN 'medium' THEN 2 ELSE 1 END DESC,
+        created_at DESC
 
 agents:
   - name: notes-agent

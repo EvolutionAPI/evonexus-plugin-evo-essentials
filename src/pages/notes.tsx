@@ -3,7 +3,8 @@ import { Card, CardHeader, CardBody, Button, Modal, SchemaForm, SchemaTable, use
 import { NOTES_SCHEMA, NOTES_COLUMNS } from '../notes-schema'
 
 type Note = Record<string, unknown>
-const BASE = '/api/plugins/evo-essentials/data/notes'
+const READ = '/api/plugins/evo-essentials/readonly-data/notes_all'
+const WRITE = '/api/plugins/evo-essentials/data/notes'
 
 export default function NotesPage({ slug }: { slug: string }) {
   void slug
@@ -11,20 +12,28 @@ export default function NotesPage({ slug }: { slug: string }) {
   const [notes, setNotes] = useState<Note[]>([])
   const [editing, setEditing] = useState<Note | null>(null)
   const [open, setOpen] = useState(false)
-  const load = useCallback(() => fetch(BASE).then(r => r.json()).then(d => setNotes(d.rows ?? [])), [])
+  const load = useCallback(
+    () => fetch(READ, { credentials: 'include' }).then(r => r.json()).then(d => setNotes(d.rows ?? [])),
+    []
+  )
   useEffect(() => { load() }, [load])
   const close = useCallback(() => { setOpen(false); setEditing(null) }, [])
 
   const save = async (v: Note) => {
     const body = editing ? { ...v, id: editing.id } : v
-    const res = await fetch(BASE, { method: editing ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    const res = await fetch(WRITE, {
+      method: editing ? 'PUT' : 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
     if (!res.ok) { toastError('Error saving note'); return }
     success(editing ? 'Updated' : 'Created')
     close(); load()
   }
 
   const del = async (row: Note) => {
-    await fetch(`${BASE}?id=${row.id}`, { method: 'DELETE' })
+    await fetch(`${WRITE}?id=${row.id}`, { method: 'DELETE', credentials: 'include' })
     success('Deleted'); load()
   }
 

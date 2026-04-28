@@ -16,7 +16,7 @@ class PinnedNotesWidget extends HTMLElement {
     this.style.cssText = 'display:block;padding:16px;font-family:inherit'
     this.innerHTML = '<p style="color:#667085;font-size:12px">Loading…</p>'
 
-    fetch('/api/plugins/evo-essentials/data/pinned_notes_count')
+    fetch('/api/plugins/evo-essentials/readonly-data/pinned_notes_count', { credentials: 'include' })
       .then(r => r.json())
       .then((d: { rows?: Array<{ count: number }> }) => {
         const count = d.rows?.[0]?.count ?? 0

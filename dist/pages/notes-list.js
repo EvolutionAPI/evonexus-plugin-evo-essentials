@@ -1,7 +1,7 @@
 import { a as e, c as t, i as n, l as r, o as i, r as a, s as o, t as s } from "../chunks/notes-schema-CRlWSxzj.js";
 import { useEffect as c, useState as l } from "react";
 //#region src/pages/notes-list.tsx
-var u = "/api/plugins/evo-essentials/data/notes", d = [
+var u = "/api/plugins/evo-essentials/readonly-data/notes_all", d = [
 	{
 		value: "",
 		label: "All priorities"
@@ -26,7 +26,7 @@ var u = "/api/plugins/evo-essentials/data/notes", d = [
 function p({ slug: p }) {
 	let [m, h] = l([]), [g, _] = l(""), [v, y] = l(!1);
 	c(() => {
-		fetch(u).then((e) => e.json()).then((e) => h(e.rows ?? [])).catch(() => h([]));
+		fetch(u, { credentials: "include" }).then((e) => e.json()).then((e) => h(e.rows ?? [])).catch(() => h([]));
 	}, []);
 	let b = m.filter((e) => !(g && e.priority !== g || v && !e.pinned)), x = s.map((e) => e.key === "priority" ? {
 		...e,
