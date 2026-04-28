@@ -18,7 +18,20 @@ export const NOTES_SCHEMA: JsonSchema = {
       title: 'Pinned',
       description: 'Show on home widget',
     },
-    due_date: { type: 'string', title: 'Due Date', format: 'date' },
+    // No `format: 'date'` — the lib's Ajv instance runs in strict mode
+    // without ajv-formats loaded, so any unknown format (date, email, uri…)
+    // crashes the SchemaForm at submit time with:
+    //   Error: unknown format "date" ignored in schema at path …
+    // Until @evoapi/evonexus-ui ships with ajv-formats, plugins must keep
+    // the schema format-free. The description below tells the user the
+    // expected shape and the host-side json_schema in plugin.yaml can keep
+    // `format: date` for documentation purposes (the host validator is more
+    // permissive).
+    due_date: {
+      type: 'string',
+      title: 'Due Date',
+      description: 'YYYY-MM-DD',
+    },
   },
 }
 

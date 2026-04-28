@@ -1,24 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Card, CardHeader, CardBody, Button, Modal, SchemaForm, SchemaTable } from '@evoapi/evonexus-ui'
+import {
+  Card, CardHeader, CardBody, Button, Modal,
+  SchemaForm, SchemaTable, ToastProvider, useToast,
+} from '@evoapi/evonexus-ui'
 import { NOTES_SCHEMA, NOTES_COLUMNS } from '../notes-schema'
 
 type Note = Record<string, unknown>
 const READ = '/api/plugins/evo-essentials/readonly-data/notes_all'
 const WRITE = '/api/plugins/evo-essentials/data/notes'
 
-// Plugins run inside a host that has its own ToastProvider, but
-// @evoapi/evonexus-ui ships a SEPARATE ToastProvider. Importing
-// useToast from the lib without wrapping the page in that lib's own
-// provider crashes with "useToast must be used within <ToastProvider>".
-// Simplest stable fix: don't depend on the lib's toast — fall back to
-// a console + window-level signal that the host can wire up later.
-function notify(msg: string, kind: 'success' | 'error' = 'success') {
-  // eslint-disable-next-line no-console
-  console.log(`[evo-essentials] ${kind}: ${msg}`)
-}
-
-export default function NotesPage({ slug }: { slug: string }) {
+// The page must own its own ToastProvider — the host's ToastProvider
+// (dashboard/frontend/src/components/Toast.tsx) is a separate context
+// that @evoapi/evonexus-ui's useToast cannot see. Without this wrapper
+// useToast() crashes with "useToast must be used within <ToastProvider>".
+function NotesInner({ slug }: { slug: string }) {
   void slug
+  const { success, error: toastError } = useToast()
   const [notes, setNotes] = useState<Note[]>([])
   const [editing, setEditing] = useState<Note | null>(null)
   const [open, setOpen] = useState(false)
@@ -37,14 +34,20 @@ export default function NotesPage({ slug }: { slug: string }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-    if (!res.ok) { notify('Error saving note', 'error'); return }
-    notify(editing ? 'Updated' : 'Created')
+    if (!res.ok) {
+      let detail = ''
+      try { detail = (await res.json()).error ?? '' } catch { /* ignore */ }
+      toastError(detail || `Error saving note (HTTP ${res.status})`)
+      return
+    }
+    success(editing ? 'Note updated' : 'Note created')
     close(); load()
   }
 
   const del = async (row: Note) => {
-    await fetch(`${WRITE}?id=${row.id}`, { method: 'DELETE', credentials: 'include' })
-    notify('Deleted'); load()
+    const res = await fetch(`${WRITE}?id=${row.id}`, { method: 'DELETE', credentials: 'include' })
+    if (!res.ok) { toastError(`Error deleting note (HTTP ${res.status})`); return }
+    success('Note deleted'); load()
   }
 
   const actionCol = { key: '_actions', label: '', render: (_: unknown, row: Note) => (
@@ -62,5 +65,13 @@ export default function NotesPage({ slug }: { slug: string }) {
         <SchemaForm schema={NOTES_SCHEMA} initialValues={editing ?? {}} onSubmit={save} onCancel={close} />
       </Modal>
     </Card>
+  )
+}
+
+export default function NotesPage(props: { slug: string }) {
+  return (
+    <ToastProvider>
+      <NotesInner {...props} />
+    </ToastProvider>
   )
 }

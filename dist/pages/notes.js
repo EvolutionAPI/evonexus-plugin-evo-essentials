@@ -1,38 +1,44 @@
-import { a as e, c as t, d as n, f as r, n as i, o as a, s as o, t as s, u as c } from "../chunks/notes-schema-IAlPDeqR.js";
-import { useCallback as l, useEffect as u, useState as d } from "react";
+import { a as e, c as t, d as n, f as r, m as i, n as a, o, p as s, s as c, t as l, u } from "../chunks/notes-schema-DJx3ICSi.js";
+import { useCallback as d, useEffect as f, useState as p } from "react";
 //#region src/pages/notes.tsx
-var f = "/api/plugins/evo-essentials/readonly-data/notes_all", p = "/api/plugins/evo-essentials/data/notes";
-function m(e, t = "success") {
-	console.log(`[evo-essentials] ${t}: ${e}`);
-}
-function h({ slug: h }) {
-	let [g, _] = d([]), [v, y] = d(null), [b, x] = d(!1), S = l(() => fetch(f, { credentials: "include" }).then((e) => e.json()).then((e) => _(e.rows ?? [])), []);
-	u(() => {
-		S();
-	}, [S]);
-	let C = l(() => {
-		x(!1), y(null);
-	}, []), w = async (e) => {
-		let t = v ? {
+var m = "/api/plugins/evo-essentials/readonly-data/notes_all", h = "/api/plugins/evo-essentials/data/notes";
+function g({ slug: s }) {
+	let { success: g, error: _ } = i(), [v, y] = p([]), [b, x] = p(null), [S, C] = p(!1), w = d(() => fetch(m, { credentials: "include" }).then((e) => e.json()).then((e) => y(e.rows ?? [])), []);
+	f(() => {
+		w();
+	}, [w]);
+	let T = d(() => {
+		C(!1), x(null);
+	}, []), E = async (e) => {
+		let t = b ? {
 			...e,
-			id: v.id
-		} : e;
-		if (!(await fetch(p, {
-			method: v ? "PUT" : "POST",
+			id: b.id
+		} : e, n = await fetch(h, {
+			method: b ? "PUT" : "POST",
 			credentials: "include",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(t)
-		})).ok) {
-			m("Error saving note", "error");
+		});
+		if (!n.ok) {
+			let e = "";
+			try {
+				e = (await n.json()).error ?? "";
+			} catch {}
+			_(e || `Error saving note (HTTP ${n.status})`);
 			return;
 		}
-		m(v ? "Updated" : "Created"), C(), S();
-	}, T = async (e) => {
-		await fetch(`${p}?id=${e.id}`, {
+		g(b ? "Note updated" : "Note created"), T(), w();
+	}, D = async (e) => {
+		let t = await fetch(`${h}?id=${e.id}`, {
 			method: "DELETE",
 			credentials: "include"
-		}), m("Deleted"), S();
-	}, E = {
+		});
+		if (!t.ok) {
+			_(`Error deleting note (HTTP ${t.status})`);
+			return;
+		}
+		g("Note deleted"), w();
+	}, O = {
 		key: "_actions",
 		label: "",
 		render: (e, t) => /* @__PURE__ */ React.createElement("span", { style: {
@@ -42,35 +48,38 @@ function h({ slug: h }) {
 			size: "sm",
 			variant: "secondary",
 			onClick: () => {
-				y(t), x(!0);
+				x(t), C(!0);
 			}
 		}, "Edit"), /* @__PURE__ */ React.createElement(n, {
 			size: "sm",
 			variant: "danger",
-			onClick: () => T(t)
+			onClick: () => D(t)
 		}, "Del"))
 	};
-	return /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement(a, null, /* @__PURE__ */ React.createElement("span", null, "Notes"), /* @__PURE__ */ React.createElement(n, {
+	return /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement(o, null, /* @__PURE__ */ React.createElement("span", null, "Notes"), /* @__PURE__ */ React.createElement(n, {
 		size: "sm",
 		onClick: () => {
-			y(null), x(!0);
+			x(null), C(!0);
 		}
-	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(o, {
-		columns: [...s, E],
-		data: g,
+	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(c, {
+		columns: [...l, O],
+		data: v,
 		emptyMessage: "No notes yet."
-	})), /* @__PURE__ */ React.createElement(c, {
-		open: b,
-		onClose: C,
-		title: v ? "Edit Note" : "New Note"
+	})), /* @__PURE__ */ React.createElement(u, {
+		open: S,
+		onClose: T,
+		title: b ? "Edit Note" : "New Note"
 	}, /* @__PURE__ */ React.createElement(r, {
-		schema: i,
-		initialValues: v ?? {},
-		onSubmit: w,
-		onCancel: C
+		schema: a,
+		initialValues: b ?? {},
+		onSubmit: E,
+		onCancel: T
 	})));
 }
+function _(e) {
+	return /* @__PURE__ */ React.createElement(s, null, /* @__PURE__ */ React.createElement(g, e));
+}
 //#endregion
-export { h as default };
+export { _ as default };
 
 //# sourceMappingURL=notes.js.map
