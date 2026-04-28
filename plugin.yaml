@@ -1,7 +1,7 @@
 schema_version: "2.0"
 id: evo-essentials
 name: Evo Essentials
-version: 1.1.3
+version: 1.1.4
 description: >
   Reference plugin for EvoNexus v2. Demonstrates one of every capability —
   agents, skills, rules, UI pages, widgets, writable_data, readonly_data,

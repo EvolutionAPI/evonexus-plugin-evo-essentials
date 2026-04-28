@@ -1,14 +1,24 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Card, CardHeader, CardBody, Button, Modal, SchemaForm, SchemaTable, useToast } from '@evoapi/evonexus-ui'
+import { Card, CardHeader, CardBody, Button, Modal, SchemaForm, SchemaTable } from '@evoapi/evonexus-ui'
 import { NOTES_SCHEMA, NOTES_COLUMNS } from '../notes-schema'
 
 type Note = Record<string, unknown>
 const READ = '/api/plugins/evo-essentials/readonly-data/notes_all'
 const WRITE = '/api/plugins/evo-essentials/data/notes'
 
+// Plugins run inside a host that has its own ToastProvider, but
+// @evoapi/evonexus-ui ships a SEPARATE ToastProvider. Importing
+// useToast from the lib without wrapping the page in that lib's own
+// provider crashes with "useToast must be used within <ToastProvider>".
+// Simplest stable fix: don't depend on the lib's toast — fall back to
+// a console + window-level signal that the host can wire up later.
+function notify(msg: string, kind: 'success' | 'error' = 'success') {
+  // eslint-disable-next-line no-console
+  console.log(`[evo-essentials] ${kind}: ${msg}`)
+}
+
 export default function NotesPage({ slug }: { slug: string }) {
   void slug
-  const { success, error: toastError } = useToast()
   const [notes, setNotes] = useState<Note[]>([])
   const [editing, setEditing] = useState<Note | null>(null)
   const [open, setOpen] = useState(false)
@@ -27,14 +37,14 @@ export default function NotesPage({ slug }: { slug: string }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-    if (!res.ok) { toastError('Error saving note'); return }
-    success(editing ? 'Updated' : 'Created')
+    if (!res.ok) { notify('Error saving note', 'error'); return }
+    notify(editing ? 'Updated' : 'Created')
     close(); load()
   }
 
   const del = async (row: Note) => {
     await fetch(`${WRITE}?id=${row.id}`, { method: 'DELETE', credentials: 'include' })
-    success('Deleted'); load()
+    notify('Deleted'); load()
   }
 
   const actionCol = { key: '_actions', label: '', render: (_: unknown, row: Note) => (

@@ -1,35 +1,38 @@
-import { a as e, c as t, d as n, f as r, n as i, o as a, p as o, s, t as c, u as l } from "../chunks/notes-schema-CYhVnIH3.js";
-import { useCallback as u, useEffect as d, useState as f } from "react";
+import { a as e, c as t, d as n, f as r, n as i, o as a, s as o, t as s, u as c } from "../chunks/notes-schema-IAlPDeqR.js";
+import { useCallback as l, useEffect as u, useState as d } from "react";
 //#region src/pages/notes.tsx
-var p = "/api/plugins/evo-essentials/readonly-data/notes_all", m = "/api/plugins/evo-essentials/data/notes";
+var f = "/api/plugins/evo-essentials/readonly-data/notes_all", p = "/api/plugins/evo-essentials/data/notes";
+function m(e, t = "success") {
+	console.log(`[evo-essentials] ${t}: ${e}`);
+}
 function h({ slug: h }) {
-	let { success: g, error: _ } = o(), [v, y] = f([]), [b, x] = f(null), [S, C] = f(!1), w = u(() => fetch(p, { credentials: "include" }).then((e) => e.json()).then((e) => y(e.rows ?? [])), []);
-	d(() => {
-		w();
-	}, [w]);
-	let T = u(() => {
-		C(!1), x(null);
-	}, []), E = async (e) => {
-		let t = b ? {
+	let [g, _] = d([]), [v, y] = d(null), [b, x] = d(!1), S = l(() => fetch(f, { credentials: "include" }).then((e) => e.json()).then((e) => _(e.rows ?? [])), []);
+	u(() => {
+		S();
+	}, [S]);
+	let C = l(() => {
+		x(!1), y(null);
+	}, []), w = async (e) => {
+		let t = v ? {
 			...e,
-			id: b.id
+			id: v.id
 		} : e;
-		if (!(await fetch(m, {
-			method: b ? "PUT" : "POST",
+		if (!(await fetch(p, {
+			method: v ? "PUT" : "POST",
 			credentials: "include",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(t)
 		})).ok) {
-			_("Error saving note");
+			m("Error saving note", "error");
 			return;
 		}
-		g(b ? "Updated" : "Created"), T(), w();
-	}, D = async (e) => {
-		await fetch(`${m}?id=${e.id}`, {
+		m(v ? "Updated" : "Created"), C(), S();
+	}, T = async (e) => {
+		await fetch(`${p}?id=${e.id}`, {
 			method: "DELETE",
 			credentials: "include"
-		}), g("Deleted"), w();
-	}, O = {
+		}), m("Deleted"), S();
+	}, E = {
 		key: "_actions",
 		label: "",
 		render: (e, t) => /* @__PURE__ */ React.createElement("span", { style: {
@@ -39,32 +42,32 @@ function h({ slug: h }) {
 			size: "sm",
 			variant: "secondary",
 			onClick: () => {
-				x(t), C(!0);
+				y(t), x(!0);
 			}
 		}, "Edit"), /* @__PURE__ */ React.createElement(n, {
 			size: "sm",
 			variant: "danger",
-			onClick: () => D(t)
+			onClick: () => T(t)
 		}, "Del"))
 	};
 	return /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement(a, null, /* @__PURE__ */ React.createElement("span", null, "Notes"), /* @__PURE__ */ React.createElement(n, {
 		size: "sm",
 		onClick: () => {
-			x(null), C(!0);
+			y(null), x(!0);
 		}
-	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(s, {
-		columns: [...c, O],
-		data: v,
+	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(o, {
+		columns: [...s, E],
+		data: g,
 		emptyMessage: "No notes yet."
-	})), /* @__PURE__ */ React.createElement(l, {
-		open: S,
-		onClose: T,
-		title: b ? "Edit Note" : "New Note"
+	})), /* @__PURE__ */ React.createElement(c, {
+		open: b,
+		onClose: C,
+		title: v ? "Edit Note" : "New Note"
 	}, /* @__PURE__ */ React.createElement(r, {
 		schema: i,
-		initialValues: b ?? {},
-		onSubmit: E,
-		onCancel: T
+		initialValues: v ?? {},
+		onSubmit: w,
+		onCancel: C
 	})));
 }
 //#endregion
