@@ -11,12 +11,15 @@ The plugin domain is deliberately didactic: a "Notes" resource (title, body, pri
 
 ## Install
 
-```bash
-# From inside an EvoNexus host instance (>= v0.34.0)
-evonexus plugin install https://github.com/EvolutionAPI/evonexus-plugin-evo-essentials
+In your EvoNexus dashboard (>= v0.34.0), open **Plugins → Install from URL** and paste:
+
+```
+https://github.com/EvolutionAPI/evonexus-plugin-evo-essentials
 ```
 
-Works on both SQLite and Postgres backends.
+The host clones the repo, validates `plugin.yaml`, runs the dialect-aware migration
+(SQLite or Postgres, picked from the active backend), and registers the UI pages,
+widget, agent, skill, and rules. Works on both SQLite and Postgres.
 
 ## Develop
 
