@@ -3,6 +3,12 @@ node_modules/
 *.log
 .DS_Store
 
+# package-lock.json is local-only — the EvoNexus host never runs `npm install`
+# on the plugin (it serves the pre-built dist/ artifacts). Keeping it out of
+# the repo also avoids tripping the host's security scanner on the SHA-512
+# integrity hashes (false-positive base64-blob detection).
+package-lock.json
+
 # dist/ and ui/widgets/ are intentionally versioned so the EvoNexus
 # installer can serve bundles without running a build step. Run
 # `npm run build` and commit the result before tagging a release.
