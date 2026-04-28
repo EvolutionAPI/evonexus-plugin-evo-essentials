@@ -27,7 +27,15 @@ function NotesInner({ slug }: { slug: string }) {
   const close = useCallback(() => { setOpen(false); setEditing(null) }, [])
 
   const save = async (v: Note) => {
-    const body = editing ? { ...v, id: editing.id } : v
+    // Strip empty strings — Postgres rejects '' for DATE/INTEGER/etc.
+    // The form leaves optional fields as '' rather than omitting them, so
+    // we drop those keys here. Backend treats absent columns as NULL.
+    const cleaned: Note = {}
+    for (const [k, val] of Object.entries(v)) {
+      if (val === '' || val === undefined) continue
+      cleaned[k] = val
+    }
+    const body = editing ? { ...cleaned, id: editing.id } : cleaned
     const res = await fetch(WRITE, {
       method: editing ? 'PUT' : 'POST',
       credentials: 'include',

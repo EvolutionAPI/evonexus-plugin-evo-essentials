@@ -10,21 +10,23 @@ function g({ slug: r }) {
 	let T = d(() => {
 		C(!1), x(null);
 	}, []), E = async (e) => {
-		let t = b ? {
-			...e,
+		let t = {};
+		for (let [n, r] of Object.entries(e)) r === "" || r === void 0 || (t[n] = r);
+		let n = b ? {
+			...t,
 			id: b.id
-		} : e, n = await fetch(h, {
+		} : t, r = await fetch(h, {
 			method: b ? "PUT" : "POST",
 			credentials: "include",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(t)
+			body: JSON.stringify(n)
 		});
-		if (!n.ok) {
+		if (!r.ok) {
 			let e = "";
 			try {
-				e = (await n.json()).error ?? "";
+				e = (await r.json()).error ?? "";
 			} catch {}
-			_(e || `Error saving note (HTTP ${n.status})`);
+			_(e || `Error saving note (HTTP ${r.status})`);
 			return;
 		}
 		g(b ? "Note updated" : "Note created"), T(), w();
