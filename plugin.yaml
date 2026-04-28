@@ -1,7 +1,7 @@
 schema_version: "2.0"
 id: evo-essentials
 name: Evo Essentials
-version: 1.0.0
+version: 1.0.1
 description: >
   Reference plugin for EvoNexus v2 React contract. Demonstrates schema-driven
   CRUD with SchemaForm/SchemaTable, a home widget, agents, skills, and rules
@@ -93,8 +93,18 @@ readonly_data:
   - id: pinned_notes_count
     description: Count of pinned notes for the home widget.
     sql: >
-      SELECT COUNT(*) AS count FROM evo_essentials_notes WHERE pinned = 1
+      SELECT COUNT(*) AS count FROM evo_essentials_notes WHERE pinned = TRUE
 
 agents:
-  - file: agents/notes-agent.md
+  - name: notes-agent
+    file: agents/notes-agent.md
+    src: agents/notes-agent.md
+
+skills:
+  - name: create-note
+    src: skills/create-note.md
+
+rules:
+  - name: notes-conventions
+    src: rules/notes-conventions.md
 
