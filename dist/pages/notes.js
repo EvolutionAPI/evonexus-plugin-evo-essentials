@@ -1,9 +1,9 @@
-import { a as e, c as t, d as n, f as r, m as i, n as a, o, p as s, s as c, t as l, u } from "../chunks/notes-schema-DJx3ICSi.js";
+import { a as e, c as t, d as n, f as r, m as i, n as a, o, p as s, s as c, t as l, u } from "../chunks/notes-schema-tqswf0Qz.js";
 import { useCallback as d, useEffect as f, useState as p } from "react";
 //#region src/pages/notes.tsx
 var m = "/api/plugins/evo-essentials/readonly-data/notes_all", h = "/api/plugins/evo-essentials/data/notes";
-function g({ slug: s }) {
-	let { success: g, error: _ } = i(), [v, y] = p([]), [b, x] = p(null), [S, C] = p(!1), w = d(() => fetch(m, { credentials: "include" }).then((e) => e.json()).then((e) => y(e.rows ?? [])), []);
+function g({ slug: r }) {
+	let { success: g, error: _ } = s(), [v, y] = p([]), [b, x] = p(null), [S, C] = p(!1), w = d(() => fetch(m, { credentials: "include" }).then((e) => e.json()).then((e) => y(e.rows ?? [])), []);
 	f(() => {
 		w();
 	}, [w]);
@@ -56,12 +56,12 @@ function g({ slug: s }) {
 			onClick: () => D(t)
 		}, "Del"))
 	};
-	return /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement(o, null, /* @__PURE__ */ React.createElement("span", null, "Notes"), /* @__PURE__ */ React.createElement(n, {
+	return /* @__PURE__ */ React.createElement(o, null, /* @__PURE__ */ React.createElement(c, null, /* @__PURE__ */ React.createElement("span", null, "Notes"), /* @__PURE__ */ React.createElement(n, {
 		size: "sm",
 		onClick: () => {
 			x(null), C(!0);
 		}
-	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(c, {
+	}, "New Note")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement(i, {
 		columns: [...l, O],
 		data: v,
 		emptyMessage: "No notes yet."
@@ -69,7 +69,7 @@ function g({ slug: s }) {
 		open: S,
 		onClose: T,
 		title: b ? "Edit Note" : "New Note"
-	}, /* @__PURE__ */ React.createElement(r, {
+	}, /* @__PURE__ */ React.createElement(e, {
 		schema: a,
 		initialValues: b ?? {},
 		onSubmit: E,
@@ -77,7 +77,7 @@ function g({ slug: s }) {
 	})));
 }
 function _(e) {
-	return /* @__PURE__ */ React.createElement(s, null, /* @__PURE__ */ React.createElement(g, e));
+	return /* @__PURE__ */ React.createElement(r, null, /* @__PURE__ */ React.createElement(g, e));
 }
 //#endregion
 export { _ as default };

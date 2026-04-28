@@ -1,4 +1,4 @@
-import { a as e, c as t, i as n, l as r, o as i, r as a, s as o, t as s } from "../chunks/notes-schema-DJx3ICSi.js";
+import { c as e, i as t, l as n, m as r, o as i, r as a, s as o, t as s } from "../chunks/notes-schema-tqswf0Qz.js";
 import { useEffect as c, useState as l } from "react";
 //#region src/pages/notes-list.tsx
 var u = "/api/plugins/evo-essentials/readonly-data/notes_all", d = [
@@ -30,14 +30,14 @@ function p({ slug: p }) {
 	}, []);
 	let b = m.filter((e) => !(g && e.priority !== g || v && !e.pinned)), x = s.map((e) => e.key === "priority" ? {
 		...e,
-		render: (e) => /* @__PURE__ */ React.createElement(n, { variant: f[e] ?? "default" }, String(e ?? ""))
+		render: (e) => /* @__PURE__ */ React.createElement(t, { variant: f[e] ?? "default" }, String(e ?? ""))
 	} : e);
-	return /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement(i, null, /* @__PURE__ */ React.createElement("span", null, "All Notes (", b.length, ")")), /* @__PURE__ */ React.createElement(t, null, /* @__PURE__ */ React.createElement("div", { style: {
+	return /* @__PURE__ */ React.createElement(i, null, /* @__PURE__ */ React.createElement(o, null, /* @__PURE__ */ React.createElement("span", null, "All Notes (", b.length, ")")), /* @__PURE__ */ React.createElement(e, null, /* @__PURE__ */ React.createElement("div", { style: {
 		display: "flex",
 		gap: 16,
 		alignItems: "flex-end",
 		marginBottom: 16
-	} }, /* @__PURE__ */ React.createElement(r, {
+	} }, /* @__PURE__ */ React.createElement(n, {
 		label: "Priority",
 		options: d,
 		value: g,
@@ -47,7 +47,7 @@ function p({ slug: p }) {
 		label: "Pinned only",
 		checked: v,
 		onChange: (e) => y(e.target.checked)
-	})), /* @__PURE__ */ React.createElement(o, {
+	})), /* @__PURE__ */ React.createElement(r, {
 		columns: x,
 		data: b,
 		emptyMessage: v || g ? "No notes match the current filters." : "No notes yet."
