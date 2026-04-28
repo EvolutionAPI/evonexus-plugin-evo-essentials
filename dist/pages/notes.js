@@ -1,4 +1,4 @@
-import { a as e, c as t, d as n, f as r, n as i, o as a, p as o, s, t as c, u as l } from "../chunks/notes-schema-CRlWSxzj.js";
+import { a as e, c as t, d as n, f as r, n as i, o as a, p as o, s, t as c, u as l } from "../chunks/notes-schema-CYhVnIH3.js";
 import { useCallback as u, useEffect as d, useState as f } from "react";
 //#region src/pages/notes.tsx
 var p = "/api/plugins/evo-essentials/readonly-data/notes_all", m = "/api/plugins/evo-essentials/data/notes";

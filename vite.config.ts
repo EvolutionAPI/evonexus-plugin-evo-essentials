@@ -17,6 +17,13 @@ import { resolve } from 'path'
 // @evoapi/evonexus-ui resolves via Node resolution from node_modules (dist/index.js
 // per the package's "exports" field). No alias — keeps the plugin repo standalone.
 export default defineConfig({
+  // Library builds don't substitute process.env.NODE_ENV automatically (only
+  // app builds do). Without this define, the bundle ships raw process.env
+  // references that crash in the browser with "process is not defined".
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
+    'process.env': '{}',
+  },
   plugins: [
     react({
       // Classic runtime: JSX → React.createElement(). No react/jsx-runtime import.
