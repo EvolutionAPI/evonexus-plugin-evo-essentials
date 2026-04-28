@@ -1,11 +1,12 @@
 schema_version: "2.0"
 id: evo-essentials
 name: Evo Essentials
-version: 1.0.2
+version: 1.1.0
 description: >
-  Reference plugin for EvoNexus v2 React contract. Demonstrates schema-driven
-  CRUD with SchemaForm/SchemaTable, a home widget, agents, skills, and rules
-  registration — all on v2 primitives. Domain: personal notes.
+  Reference plugin for EvoNexus v2. Demonstrates one of every capability —
+  agents, skills, rules, UI pages, widgets, writable_data, readonly_data,
+  claude_hooks, integrations, mcp_servers, heartbeats, routines — so plugin
+  authors have a working example for each surface. Domain: personal notes.
 author: Evolution Foundation <contato@evolutionfoundation.com.br>
 license: MIT
 homepage: https://github.com/EvolutionAPI/evonexus-plugin-evo-essentials
@@ -21,6 +22,8 @@ capabilities:
   - widgets
   - readonly_data
   - writable_data
+  - claude_hooks
+  - heartbeats
 
 ui_entry_points:
   pages:
@@ -94,6 +97,13 @@ readonly_data:
     description: Count of pinned notes for the home widget.
     sql: >
       SELECT COUNT(*) AS count FROM evo_essentials_notes WHERE pinned = TRUE
+  - id: notes_by_priority
+    description: Note counts grouped by priority.
+    sql: >
+      SELECT priority, COUNT(*) AS count
+      FROM evo_essentials_notes
+      GROUP BY priority
+      ORDER BY priority
 
 agents:
   - name: notes-agent
@@ -108,3 +118,29 @@ rules:
   - name: notes-conventions
     src: rules/notes-conventions.md
 
+claude_hooks:
+  - event: PostToolUse
+    handler_path: hooks/log-tool-use.py
+
+integrations:
+  - slug: notes-export
+    label: Notes Export Webhook
+    category: productivity
+    env_vars:
+      - name: NOTES_EXPORT_WEBHOOK_URL
+        description: Webhook called whenever a high-priority note is created.
+        required: false
+        secret: false
+      - name: NOTES_EXPORT_API_KEY
+        description: Bearer token for the webhook above (if it requires auth).
+        required: false
+        secret: true
+
+mcp_servers:
+  - name: notes-fs
+    command: npx
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "${PLUGIN_DIR}"
+    env: {}

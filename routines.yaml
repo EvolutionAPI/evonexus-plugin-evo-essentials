@@ -1,0 +1,9 @@
+# Routines for evo-essentials.
+#
+# Routines are scheduled scripts (cron-style). See .claude/rules/routines.md
+# in the host workspace. All routines default to enabled=false on install.
+daily:
+  - name: notes-cleanup
+    script: scripts/notes_cleanup.py
+    time: "21:30"
+    agent: notes-agent

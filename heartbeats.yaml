@@ -1,0 +1,21 @@
+# Heartbeats for evo-essentials.
+#
+# Heartbeats are proactive agents that wake on a schedule, run a 9-step
+# protocol, and decide whether to act. See .claude/rules/heartbeats.md
+# in the host workspace for the full spec.
+#
+# All heartbeats default to enabled=false on install — the user must
+# explicitly toggle them in /scheduler.
+heartbeats:
+  - id: notes-priority-watch
+    agent: notes-agent
+    interval_seconds: 21600  # 6h
+    max_turns: 5
+    timeout_seconds: 300
+    lock_timeout_seconds: 1800
+    wake_triggers: [interval, manual]
+    required_secrets: []
+    decision_prompt: |
+      Check evo_essentials_notes for high-priority notes with no due_date set.
+      For each, suggest a due_date based on the title's urgency cues
+      ("urgente", "hoje", "amanhã"). If you find none, skip silently.
